@@ -2,6 +2,23 @@
 
 > seek, and ye shall find
 
+a simple online bible search tool
+
+uses the texts from bible.json https://github.com/thiagobodruk/bible please support that project
+
+## TODO
+
+- fuzzy text search, see http://rachbelaid.com/postgres-full-text-search-is-good-enough/
+- get more bible versions:
+  - https://github.com/honza/bibles
+  - http://www.hackathon.bible/data.html
+  - https://github.com/wasdin/SWORD-to-JSON
+  - get a hebrew version
+- better old english stemming support in postgres (e.g. `worship` vs `worshippeth`, `thou` as a stopword)
+- maybe look into other full text search solutions (elastic search, lucene)
+- also index for context, synonyms or commentary
+- i18n
+
 ## Build Setup
 
 ``` bash
