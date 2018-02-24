@@ -13,10 +13,18 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  modules: [
+    '@nuxtjs/bulma'
+  ],
   /*
   ** Global CSS
   */
-  css: ['~assets/css/main.css'],
+  css: ['~assets/css/main.css',
+        //{
+            //src: 'bulma',
+            //lang: 'sass'
+        //},
+  ],
   /*
   ** Customize the progress-bar color
   */
@@ -28,15 +36,15 @@ module.exports = {
     /*
      ** Run ESLINT on save
      */
-    extend (config, ctx) {
-      if (ctx.isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
-    }
+    // extend(config, ctx) {
+    //   if (ctx.isClient) {
+    //     config.module.rules.push({
+    //       enforce: 'pre',
+    //       test: /\.(js|vue)$/,
+    //       loader: 'eslint-loader',
+    //       exclude: /(node_modules)/
+    //     })
+    //   }
+    // }
   }
 }

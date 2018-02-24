@@ -1,5 +1,6 @@
-<template>
-  <footer>
-    Visit our website for more documentation : <a href="https://nuxtjs.org" target="_blank">nuxtjs.org</a>
-  </footer>
+<template lang="pug">
+  footer.
+    <nuxt-link to='/about'>about</nuxt-link>
+    - <a href="" target="_blank">feedback</a>
+    - <a href="" target="_blank">donate</a>
 </template>

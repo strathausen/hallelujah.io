@@ -16,8 +16,13 @@ uses the texts from bible.json https://github.com/thiagobodruk/bible please supp
   - get a hebrew version
 - better old english stemming support in postgres (e.g. `worship` vs `worshippeth`, `thou` as a stopword)
 - maybe look into other full text search solutions (elastic search, lucene)
-- also index for context, synonyms or commentary
+- also index for context, synonyms, thesaurus, commentary, bible synonym lists
 - i18n
+- consider if Elastic Search would be an option
+- support for ü->ue
+- import dictionaries (e.g. ispell, https://www.cs.hmc.edu/~geoff/ispell-dictionaries.html )
+- synonym support
+- Vietnamese: maybe don't unaccent for search?
 
 ## Build Setup
 

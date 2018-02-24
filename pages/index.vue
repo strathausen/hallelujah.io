@@ -1,14 +1,40 @@
-<template>
-  <section class="container">
-    <img src="../assets/img/logo.png" alt="Nuxt.js Logo" class="logo" />
-    <h1 class="title">
-      Universal Vue.js Application Framework
-    </h1>
-    <nuxt-link class="button" to="/about">
-      About page
-    </nuxt-link>
-  </section>
+<template lang='pug'>
+  section.container
+    div.hero
+      .field.has-addons
+        .control
+          span.select
+            select(v-model='edition')
+              option(v-for='edition in editions')
+                | {{edition.abbrev}}
+        .control
+          input.input(v-model='query' @keyup='onUpdate' type='text' placeholder='and thou shalt find')
+    div
+      div(v-for='verse in results')
+        hr
+        p {{verse.text}}
+        b: b {{verse.book}} {{verse.verse}}.{{verse.chapter}}
 </template>
+
+<script lang='coffee'>
+import axios from 'axios'
+
+export default {
+  data: ->
+    editions: []
+    edition: ''
+    query: ''
+    results: []
+
+  methods:
+    onUpdate: ->
+      params = q: @query, edition: @edition
+      @results = (await axios.get('/api/search/query', { params })).data.verses
+
+  mounted: ->
+    @editions = (await axios.get('/api/search/editions')).data
+}
+</script>
 
 <style scoped>
 .title
