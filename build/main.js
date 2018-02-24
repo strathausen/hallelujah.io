@@ -175,42 +175,26 @@ var loadEditions = function () {
   }));
 }();
 
-router.get('/', function () {
+router.get('/editions', function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.mark(function _callee2(ctx) {
-    var _ctx$query, q, limit, edition, editions, _ref3, pg_language, start, queryPart, params, verseQuery, verses, end, duration;
-
+    var editions;
     return __WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _ctx$query = ctx.query, q = _ctx$query.q, limit = _ctx$query.limit, edition = _ctx$query.edition;
-            _context2.next = 3;
+            _context2.next = 2;
             return loadEditions();
 
-          case 3:
+          case 2:
             editions = _context2.sent;
-            _ref3 = _.first(editions[edition]) || { pg_language: 'simple' }, pg_language = _ref3.pg_language;
-            start = Date.now();
-            queryPart = 'to_tsquery(:pg_language, unaccent(:q))';
-            params = { q: q, pg_language: pg_language };
 
-            params.q = params.q.replace(/ /g, '|');
-            verseQuery = db('search_index').select('id', 'text', 'verse', 'book', 'chapter', db.raw('ts_rank(document, ' + queryPart + ') AS relevancy', params)).where('document', '@@', db.raw(queryPart, params)).orderBy('relevancy', 'DESC').limit(limit || 10);
+            ctx.body = _(editions).map(function (e) {
+              return e[0];
+            }).each(function (e) {
+              e.name = e.abbrev.split('_')[1];
+            });
 
-            if (edition) {
-              verseQuery.where('edition', '=', edition);
-            }
-            _context2.next = 13;
-            return verseQuery;
-
-          case 13:
-            verses = _context2.sent;
-            end = Date.now();
-            duration = end - start + 'ms';
-
-            ctx.body = { duration: duration, verses: verses };
-
-          case 17:
+          case 4:
           case 'end':
             return _context2.stop();
         }
@@ -220,6 +204,56 @@ router.get('/', function () {
 
   return function (_x) {
     return _ref2.apply(this, arguments);
+  };
+}());
+
+router.get('/query', function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.mark(function _callee3(ctx) {
+    var _ctx$query, q, limit, edition, editions, _ref4, pg_language, start, queryPart, params, verseQuery, verses, end, duration;
+
+    return __WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _ctx$query = ctx.query, q = _ctx$query.q, limit = _ctx$query.limit, edition = _ctx$query.edition;
+            _context3.next = 3;
+            return loadEditions();
+
+          case 3:
+            editions = _context3.sent;
+            _ref4 = _.first(editions[edition]) || { pg_language: 'simple' }, pg_language = _ref4.pg_language;
+            start = Date.now();
+            queryPart = 'to_tsquery(:pg_language, unaccent(:q))';
+            params = { q: q, pg_language: pg_language };
+
+            params.q = params.q.split(/ /).filter(function (x) {
+              return !!x;
+            }).join('|') + ':*';
+            verseQuery = db('search_index').select('id', 'text', 'verse', 'book', 'chapter', db.raw('ts_rank(document, ' + queryPart + ') AS relevancy', params)).where('document', '@@', db.raw(queryPart, params)).orderBy('relevancy', 'DESC').limit(limit || 10);
+
+            if (edition) {
+              verseQuery.where('edition', '=', edition);
+            }
+            _context3.next = 13;
+            return verseQuery;
+
+          case 13:
+            verses = _context3.sent;
+            end = Date.now();
+            duration = end - start + 'ms';
+
+            ctx.body = { duration: duration, verses: verses };
+
+          case 17:
+          case 'end':
+            return _context3.stop();
+        }
+      }
+    }, _callee3, _this);
+  }));
+
+  return function (_x2) {
+    return _ref3.apply(this, arguments);
   };
 }());
 
@@ -397,7 +431,7 @@ var start = function () {
             }());
 
             app.listen(port, host);
-            console.log('Server listening on ' + host + ':' + port); // eslint-disable-line no-console
+            console.log('Server listening on ' + host + ':' + port + ' node version ' + process.version); // eslint-disable-line no-console
 
           case 14:
           case 'end':
