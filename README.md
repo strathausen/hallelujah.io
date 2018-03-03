@@ -22,7 +22,8 @@ uses the texts from bible.json https://github.com/thiagobodruk/bible please supp
 - support for ü->ue
 - import dictionaries (e.g. ispell, https://www.cs.hmc.edu/~geoff/ispell-dictionaries.html )
 - synonym support
-- Vietnamese: maybe don't unaccent for search?
+- Vietnamese, and other languages? -> maybe don't unaccent for search?
+- use context (e.g. previous and next verse) and ranking for queries
 
 ## Build Setup
 

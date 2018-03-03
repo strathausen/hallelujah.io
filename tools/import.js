@@ -10,8 +10,9 @@ const db = knex(dbConfig.development)
 
 const sourcePath = path.resolve(__dirname, '..', '..', 'bible-json', 'json')
 
-const editions = fs.readdirSync(sourcePath)
-// editions = [editions[3]]
+const replacements = [[/&#x27;/g, "'"]]
+
+const editions = fs.readdirSync(sourcePath) // .slice(3, 4)
 
 console.log(`reading ${editions.length} editions...`) // eslint-disable-line
 Promise.mapSeries(editions, async (edition) => {
@@ -23,20 +24,19 @@ Promise.mapSeries(editions, async (edition) => {
   const editionRow = { abbrev, locale, pg_language }
   const [edition_id] = await db('editions').insert(editionRow).returning('id')
   await Promise.map(books, async (book) => {
-    const bookRow = { abbrev: book.abbrev, name: book.book, edition_id }
+    const bookRow = { abbrev: book.abbrev, name: book.name, edition_id }
 
     const [book_id] = await db('books').insert(bookRow).returning('id')
-    // nesting
-    const chapters = book.chapters.map(chapter => _
-      .map(chapter, (verses, index) => ({ index, verses }))[0])
-    await Promise.map(chapters, async (chapter) => {
-      const chapterRow = { book_id, index: chapter.index }
+    await Promise.map(book.chapters, async (verses, chapterIndex) => {
+      const chapterRow = { book_id, index: chapterIndex }
       const [chapter_id] = await db('chapters').insert(chapterRow).returning('id')
-      // nesting
-      const verses = _.map(chapter.verses, (content, index) => ({
-        index, content, chapter_id,
-      }))
-      await db.batchInsert('verses', verses)
+      const verseRows = verses.map((content, index) => {
+        replacements.forEach(([search, replace]) => {
+          content = content.replace(search, replace)
+        })
+        return { index, content, chapter_id }
+      })
+      await db.batchInsert('verses', verseRows)
     }, { concurrency: 10 })
   })
   console.log(`finished edition ${edition}.`) // eslint-disable-line

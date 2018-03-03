@@ -3,28 +3,24 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'starter',
+    title: 'hallelujah.io',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Nuxt.js project' }
+      { hid: 'description', name: 'description', content: 'simple and fast bible search' },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+    ],
   },
   modules: [
-    '@nuxtjs/bulma'
+    '@nuxtjs/axios',
+    // '@nuxtjs/bulma',
   ],
   /*
   ** Global CSS
   */
-  css: ['~assets/css/main.css',
-        //{
-            //src: 'bulma',
-            //lang: 'sass'
-        //},
-  ],
+  css: ['~assets/css/main.css'],
   /*
   ** Customize the progress-bar color
   */
@@ -36,7 +32,12 @@ module.exports = {
     /*
      ** Run ESLINT on save
      */
-    // extend(config, ctx) {
+    extend(config, ctx) {
+      config.module.rules.push({
+        test: /\.md/,
+        loader: 'markdownit-loader'
+      })
+    },
     //   if (ctx.isClient) {
     //     config.module.rules.push({
     //       enforce: 'pre',
@@ -45,6 +46,5 @@ module.exports = {
     //       exclude: /(node_modules)/
     //     })
     //   }
-    // }
-  }
+  },
 }

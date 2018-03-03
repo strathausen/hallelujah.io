@@ -1,22 +1,23 @@
-<template lang='pug'>
+<template lang="pug">
   section.container
     div.hero
       .field.has-addons
         .control
           span.select
-            select(v-model='edition')
-              option(v-for='edition in editions')
+            select(v-model='edition' @change='onUpdate')
+              option(value='' disabled hidden selected) seek,
+              option(v-for='edition in editions' v-value='edition.abbrev')
                 | {{edition.abbrev}}
         .control
-          input.input(v-model='query' @keyup='onUpdate' type='text' placeholder='and thou shalt find')
+          input.input(v-model='query' @keyup='onUpdate' type='text' placeholder='and ye shall find')
     div
       div(v-for='verse in results')
         hr
         p {{verse.text}}
-        b: b {{verse.book}} {{verse.verse}}.{{verse.chapter}}
+        p: b {{verse.book}} {{verse.verse}}.{{verse.chapter}}
 </template>
 
-<script lang='coffee'>
+<script lang="coffee">
 import axios from 'axios'
 
 export default {
@@ -37,8 +38,7 @@ export default {
 </script>
 
 <style scoped>
-.title
-{
+.title {
   margin: 50px 0;
 }
 </style>

@@ -17,17 +17,17 @@ export default {
 
 <style lang='scss'>
 // 1. Import the initial variables
-@import "../node_modules/bulma/sass/utilities/initial-variables";
-@import "../node_modules/bulma/sass/utilities/functions";
+@import '../node_modules/bulma/sass/utilities/initial-variables';
+@import '../node_modules/bulma/sass/utilities/functions';
 
 // 2. Set your own initial variables
 // Update blue
-$blue: #72d0eb;
+$blue: darken(#72d0eb, 10);
 // Add pink and its invert
 $pink: #ffb3b3;
 $pink-invert: #fff;
 // Add a serif family
-$family-serif: "Merriweather", "Georgia", serif;
+$family-serif: 'Merriweather', 'Georgia', serif;
 
 // 3. Set the derived variables
 // Use the new pink as the primary color
@@ -89,5 +89,14 @@ $family-primary: $family-serif;
   font-weight: 300;
   font-size: 2.5em;
   margin: 0;
+}
+
+body {
+  margin: 10%;
+}
+
+.bmc-button img {
+  vertical-align: middle;
+  margin-bottom: 5px;
 }
 </style>

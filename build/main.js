@@ -90,15 +90,20 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'starter',
-    meta: [{ charset: 'utf-8' }, { name: 'viewport', content: 'width=device-width, initial-scale=1' }, { hid: 'description', name: 'description', content: 'Nuxt.js project' }],
+    title: 'hallelujah.io',
+    meta: [{ charset: 'utf-8' }, { name: 'viewport', content: 'width=device-width, initial-scale=1' }, { hid: 'description', name: 'description', content: 'simple and fast bible search' }],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   modules: ['@nuxtjs/bulma'],
   /*
   ** Global CSS
   */
-  css: ['~assets/css/main.css'],
+  css: ['~assets/css/main.css'
+  // {
+  // src: 'bulma',
+  // lang: 'sass'
+  // },
+  ],
   /*
   ** Customize the progress-bar color
   */
@@ -216,10 +221,20 @@ router.get('/query', function () {
         switch (_context3.prev = _context3.next) {
           case 0:
             _ctx$query = ctx.query, q = _ctx$query.q, limit = _ctx$query.limit, edition = _ctx$query.edition;
-            _context3.next = 3;
+
+            if (q) {
+              _context3.next = 4;
+              break;
+            }
+
+            ctx.body = { duration: 0, verses: [] };
+            return _context3.abrupt('return');
+
+          case 4:
+            _context3.next = 6;
             return loadEditions();
 
-          case 3:
+          case 6:
             editions = _context3.sent;
             _ref4 = _.first(editions[edition]) || { pg_language: 'simple' }, pg_language = _ref4.pg_language;
             start = Date.now();
@@ -234,17 +249,18 @@ router.get('/query', function () {
             if (edition) {
               verseQuery.where('edition', '=', edition);
             }
-            _context3.next = 13;
+            console.log(verseQuery.toString());
+            _context3.next = 17;
             return verseQuery;
 
-          case 13:
+          case 17:
             verses = _context3.sent;
             end = Date.now();
             duration = end - start + 'ms';
 
             ctx.body = { duration: duration, verses: verses };
 
-          case 17:
+          case 21:
           case 'end':
             return _context3.stop();
         }
@@ -353,12 +369,14 @@ module.exports = require("regenerator-runtime");
 Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_koa__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_koa___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_koa__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_koa_router__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_koa_router___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_koa_router__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nuxt__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nuxt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_nuxt__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_coffeescript_register__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_coffeescript_register___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_coffeescript_register__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_koa__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_koa___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_koa__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_koa_router__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_koa_router___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_koa_router__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_nuxt__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_nuxt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_nuxt__);
 
 
 var start = function () {
@@ -370,7 +388,7 @@ var start = function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            app = new __WEBPACK_IMPORTED_MODULE_1_koa___default.a();
+            app = new __WEBPACK_IMPORTED_MODULE_2_koa___default.a();
             host = process.env.HOST || '127.0.0.1';
             port = process.env.PORT || 3000;
 
@@ -381,7 +399,7 @@ var start = function () {
             config.dev = !(app.env === 'production');
 
             // Instantiate nuxt.js
-            nuxt = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Nuxt"](config);
+            nuxt = new __WEBPACK_IMPORTED_MODULE_4_nuxt__["Nuxt"](config);
 
             // Build in development
 
@@ -390,7 +408,7 @@ var start = function () {
               break;
             }
 
-            builder = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Builder"](nuxt);
+            builder = new __WEBPACK_IMPORTED_MODULE_4_nuxt__["Builder"](nuxt);
             _context2.next = 10;
             return builder.build();
 
@@ -452,11 +470,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 
+
 var searchRouter = __webpack_require__(3);
-var router = new __WEBPACK_IMPORTED_MODULE_2_koa_router___default.a();
+var router = new __WEBPACK_IMPORTED_MODULE_3_koa_router___default.a();
 router.use('/api/search', searchRouter.routes());
 
 start();
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+module.exports = require("coffeescript/register");
 
 /***/ }
 /******/ ]);

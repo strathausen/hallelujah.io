@@ -4,3 +4,4 @@ now.json
 npm-debug.log
 .nuxt
 dist
+*.internal
