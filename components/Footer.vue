@@ -1,7 +1,5 @@
 <template lang="pug">
 footer.
-  <nuxt-link to='/about'>about</nuxt-link>
-  &nbsp;
   <nuxt-link to='/content/about'>about</nuxt-link>
   &nbsp;
   &nbsp;

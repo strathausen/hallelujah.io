@@ -65,21 +65,20 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-module.exports = __webpack_require__(10);
-
+module.exports = require("koa-router");
 
 /***/ },
 /* 1 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-router");
+module.exports = require("lodash");
 
 /***/ },
 /* 2 */
@@ -94,16 +93,11 @@ module.exports = {
     meta: [{ charset: 'utf-8' }, { name: 'viewport', content: 'width=device-width, initial-scale=1' }, { hid: 'description', name: 'description', content: 'simple and fast bible search' }],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
-  modules: ['@nuxtjs/bulma'],
+  modules: ['@nuxtjs/axios'],
   /*
   ** Global CSS
   */
-  css: ['~assets/css/main.css'
-  // {
-  // src: 'bulma',
-  // lang: 'sass'
-  // },
-  ],
+  css: ['~assets/css/main.css'],
   /*
   ** Customize the progress-bar color
   */
@@ -115,16 +109,12 @@ module.exports = {
     /*
      ** Run ESLINT on save
      */
-    // extend(config, ctx) {
-    //   if (ctx.isClient) {
-    //     config.module.rules.push({
-    //       enforce: 'pre',
-    //       test: /\.(js|vue)$/,
-    //       loader: 'eslint-loader',
-    //       exclude: /(node_modules)/
-    //     })
-    //   }
-    // }
+    extend: function extend(config, ctx) {
+      config.module.rules.push({
+        test: /\.md/,
+        loader: 'markdownit-loader'
+      });
+    }
   }
 };
 
@@ -132,163 +122,114 @@ module.exports = {
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator__);
+/* WEBPACK VAR INJECTION */(function(__dirname) {var Router, _, fm, fs, md, router;
 
+_ = __webpack_require__(1);
 
-var _this = this;
+Router = __webpack_require__(0);
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+fs = __webpack_require__(10);
 
-var _ = __webpack_require__(9);
-var Router = __webpack_require__(1);
-var db = __webpack_require__(7);
+fm = __webpack_require__(9);
 
-var router = new Router();
+md = __webpack_require__(12)();
 
-var loadEditions = function () {
-  var editions = void 0;
-  return _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.mark(function _callee() {
-    return __WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            if (editions) {
-              _context.next = 6;
-              break;
-            }
+router = new Router();
 
-            _context.t0 = _;
-            _context.next = 4;
-            return db('editions').select('*');
-
-          case 4:
-            _context.t1 = _context.sent;
-            editions = _context.t0.groupBy.call(_context.t0, _context.t1, 'abbrev');
-
-          case 6:
-            return _context.abrupt('return', editions);
-
-          case 7:
-          case 'end':
-            return _context.stop();
-        }
-      }
-    }, _callee, _this);
-  }));
-}();
-
-router.get('/editions', function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.mark(function _callee2(ctx) {
-    var editions;
-    return __WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.next = 2;
-            return loadEditions();
-
-          case 2:
-            editions = _context2.sent;
-
-            ctx.body = _(editions).map(function (e) {
-              return e[0];
-            }).each(function (e) {
-              e.name = e.abbrev.split('_')[1];
-            });
-
-          case 4:
-          case 'end':
-            return _context2.stop();
-        }
-      }
-    }, _callee2, _this);
-  }));
-
-  return function (_x) {
-    return _ref2.apply(this, arguments);
-  };
-}());
-
-router.get('/query', function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.mark(function _callee3(ctx) {
-    var _ctx$query, q, limit, edition, editions, _ref4, pg_language, start, queryPart, params, verseQuery, verses, end, duration;
-
-    return __WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            _ctx$query = ctx.query, q = _ctx$query.q, limit = _ctx$query.limit, edition = _ctx$query.edition;
-
-            if (q) {
-              _context3.next = 4;
-              break;
-            }
-
-            ctx.body = { duration: 0, verses: [] };
-            return _context3.abrupt('return');
-
-          case 4:
-            _context3.next = 6;
-            return loadEditions();
-
-          case 6:
-            editions = _context3.sent;
-            _ref4 = _.first(editions[edition]) || { pg_language: 'simple' }, pg_language = _ref4.pg_language;
-            start = Date.now();
-            queryPart = 'to_tsquery(:pg_language, unaccent(:q))';
-            params = { q: q, pg_language: pg_language };
-
-            params.q = params.q.split(/ /).filter(function (x) {
-              return !!x;
-            }).join('|') + ':*';
-            verseQuery = db('search_index').select('id', 'text', 'verse', 'book', 'chapter', db.raw('ts_rank(document, ' + queryPart + ') AS relevancy', params)).where('document', '@@', db.raw(queryPart, params)).orderBy('relevancy', 'DESC').limit(limit || 10);
-
-            if (edition) {
-              verseQuery.where('edition', '=', edition);
-            }
-            console.log(verseQuery.toString());
-            _context3.next = 17;
-            return verseQuery;
-
-          case 17:
-            verses = _context3.sent;
-            end = Date.now();
-            duration = end - start + 'ms';
-
-            ctx.body = { duration: duration, verses: verses };
-
-          case 21:
-          case 'end':
-            return _context3.stop();
-        }
-      }
-    }, _callee3, _this);
-  }));
-
-  return function (_x2) {
-    return _ref3.apply(this, arguments);
-  };
-}());
+router.get('/:name', async function(ctx) {
+  var attributes, body, name, rawArticle;
+  ({name} = ctx.params);
+  rawArticle = (await fs.readFile(`${__dirname}/../content/${name}.md`, 'utf8'));
+  ({attributes, body} = fm(rawArticle));
+  attributes.body = md.render(body);
+  return ctx.body = attributes;
+});
 
 module.exports = router;
 
+/* WEBPACK VAR INJECTION */}.call(exports, "server/routes"))
+
 /***/ },
 /* 4 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-module.exports = require("koa");
+var Router, _, db, loadEditions, router;
+
+_ = __webpack_require__(1);
+
+Router = __webpack_require__(0);
+
+db = __webpack_require__(8);
+
+router = new Router();
+
+loadEditions = (function() {
+  var editions;
+  editions = false;
+  return async() => {
+    editions || (editions = _.groupBy((await db('editions').select('*')), 'abbrev'));
+    return editions;
+  };
+})();
+
+router.get('/editions', async function(ctx) {
+  var editions;
+  editions = (await loadEditions());
+  return ctx.body = _(editions).map(function(e) {
+    return e[0];
+  }).each(function(e) {
+    return e.name = (e.abbrev.split('_')[1]);
+  });
+});
+
+router.get('/query', async function(ctx) {
+  var duration, edition, editions, end, limit, params, pg_language, q, queryPart, start, verseQuery, verses;
+  ({q, limit, edition} = ctx.query);
+  if (!q) {
+    ctx.body = {
+      duration: 0,
+      verses: []
+    };
+    return;
+  }
+  editions = (await loadEditions());
+  ({pg_language} = _.first(editions[edition]) || {
+    pg_language: 'simple'
+  });
+  start = Date.now();
+  queryPart = 'to_tsquery(:pg_language, unaccent(:q))';
+  params = {q, pg_language};
+  params.q = params.q.split(/ /).filter((x) => {
+    return !!x;
+  }).join('|') + ':*';
+  verseQuery = db('search_index').select('id', 'text', 'verse', 'book', 'chapter', db.raw(`ts_rank(document, ${queryPart}) AS relevancy`, params)).where('document', '@@', db.raw(queryPart, params)).orderBy('relevancy', 'DESC').limit(limit || 10);
+  if (edition) {
+    verseQuery.where('edition', '=', edition);
+  }
+  console.log(verseQuery.toString());
+  verses = (await verseQuery);
+  end = Date.now();
+  duration = `${end - start}ms`;
+  return ctx.body = {duration, verses};
+});
+
+module.exports = router;
+
 
 /***/ },
 /* 5 */
 /***/ function(module, exports) {
 
-module.exports = require("nuxt");
+module.exports = require("koa");
 
 /***/ },
 /* 6 */
+/***/ function(module, exports) {
+
+module.exports = require("nuxt");
+
+/***/ },
+/* 7 */
 /***/ function(module, exports) {
 
 module.exports = {
@@ -333,155 +274,103 @@ module.exports = {
 };
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-var knex = __webpack_require__(8);
-var dbConfig = __webpack_require__(6);
+var db, dbConfig, knex;
 
-var db = knex(dbConfig.development);
+knex = __webpack_require__(11);
+
+dbConfig = __webpack_require__(7);
+
+db = knex(dbConfig.development);
 
 module.exports = db;
 
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-module.exports = require("knex");
 
 /***/ },
 /* 9 */
 /***/ function(module, exports) {
 
-module.exports = require("lodash");
+module.exports = require("front-matter");
 
 /***/ },
 /* 10 */
 /***/ function(module, exports) {
 
-module.exports = require("regenerator-runtime");
+module.exports = require("fs-extra");
 
 /***/ },
 /* 11 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_coffeescript_register__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_coffeescript_register___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_coffeescript_register__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_koa__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_koa___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_koa__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_koa_router__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_koa_router___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_koa_router__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_nuxt__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_nuxt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_nuxt__);
-
-
-var start = function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.mark(function _callee2() {
-    var _this = this;
-
-    var app, host, port, config, nuxt, builder;
-    return __WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            app = new __WEBPACK_IMPORTED_MODULE_2_koa___default.a();
-            host = process.env.HOST || '127.0.0.1';
-            port = process.env.PORT || 3000;
-
-            // Import and Set Nuxt.js options
-
-            config = __webpack_require__(2);
-
-            config.dev = !(app.env === 'production');
-
-            // Instantiate nuxt.js
-            nuxt = new __WEBPACK_IMPORTED_MODULE_4_nuxt__["Nuxt"](config);
-
-            // Build in development
-
-            if (!config.dev) {
-              _context2.next = 10;
-              break;
-            }
-
-            builder = new __WEBPACK_IMPORTED_MODULE_4_nuxt__["Builder"](nuxt);
-            _context2.next = 10;
-            return builder.build();
-
-          case 10:
-
-            app.use(router.routes());
-            app.use(function () {
-              var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.mark(function _callee(ctx, next) {
-                return __WEBPACK_IMPORTED_MODULE_0__Users_p_projects_hallelujah_io_node_modules_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-                  while (1) {
-                    switch (_context.prev = _context.next) {
-                      case 0:
-                        _context.next = 2;
-                        return next();
-
-                      case 2:
-                        ctx.status = 200; // koa defaults to 404 when it sees that status is unset
-                        return _context.abrupt('return', new Promise(function (resolve, reject) {
-                          ctx.res.on('close', resolve);
-                          ctx.res.on('finish', resolve);
-                          nuxt.render(ctx.req, ctx.res, function (promise) {
-                            // nuxt.render passes a rejected promise into callback on error.
-                            promise.then(resolve).catch(reject);
-                          });
-                        }));
-
-                      case 4:
-                      case 'end':
-                        return _context.stop();
-                    }
-                  }
-                }, _callee, _this);
-              }));
-
-              return function (_x, _x2) {
-                return _ref2.apply(this, arguments);
-              };
-            }());
-
-            app.listen(port, host);
-            console.log('Server listening on ' + host + ':' + port + ' node version ' + process.version); // eslint-disable-line no-console
-
-          case 14:
-          case 'end':
-            return _context2.stop();
-        }
-      }
-    }, _callee2, this);
-  }));
-
-  return function start() {
-    return _ref.apply(this, arguments);
-  };
-}();
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-
-
-
-
-
-var searchRouter = __webpack_require__(3);
-var router = new __WEBPACK_IMPORTED_MODULE_3_koa_router___default.a();
-router.use('/api/search', searchRouter.routes());
-
-start();
+module.exports = require("knex");
 
 /***/ },
 /* 12 */
 /***/ function(module, exports) {
 
-module.exports = require("coffeescript/register");
+module.exports = require("markdown-it");
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+var Builder, Koa, Nuxt, Router, contentRouter, router, searchRouter;
+
+Koa = __webpack_require__(5);
+
+Router = __webpack_require__(0);
+
+({Nuxt, Builder} = __webpack_require__(6));
+
+searchRouter = __webpack_require__(4);
+
+contentRouter = __webpack_require__(3);
+
+// server side routes
+router = new Router();
+
+// search the bible
+router.use('/api/search', searchRouter.routes());
+
+// read content written in markdown
+router.use('/api/content', contentRouter.routes());
+
+// bootstrapping the server
+(async function() {
+  var app, builder, config, host, nuxt, port;
+  app = new Koa();
+  host = process.env.HOST || '127.0.0.1';
+  port = process.env.PORT || 3000;
+  // Import and Set Nuxt.js options
+  config = __webpack_require__(2);
+  config.dev = app.env !== 'production';
+  // Instantiate nuxt.js
+  nuxt = new Nuxt(config);
+  // Build in development
+  if (config.dev) {
+    builder = new Builder(nuxt);
+    await builder.build();
+  }
+  app.use(router.routes());
+  app.use(async function(ctx, next) {
+    await next();
+    // koa defaults to 404 when it sees that status is unset
+    ctx.status = 200;
+    return new Promise(function(resolve, reject) {
+      ctx.res.on('close', resolve);
+      ctx.res.on('finish', resolve);
+      return nuxt.render(ctx.req, ctx.res, function(promise) {
+        // nuxt.render passes a rejected promise into callback on error.
+        return promise.then(resolve).catch(reject);
+      });
+    });
+  });
+  app.listen(port, host);
+  return console.log(`Server listening on ${host}:${port} node version ${process.version}`);
+})();
+
 
 /***/ }
 /******/ ]);

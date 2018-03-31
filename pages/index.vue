@@ -1,4 +1,4 @@
-<template lang="pug">
+<template lang='pug'>
   section.container
     div.hero
       .field.has-addons
@@ -6,7 +6,7 @@
           span.select
             select(v-model='edition' @change='onUpdate')
               option(value='' disabled hidden selected) seek,
-              option(v-for='edition in editions' v-value='edition.abbrev')
+              option(v-for='edition in editions' :value='edition.abbrev')
                 | {{edition.abbrev}}
         .control
           input.input(v-model='query' @keyup='onUpdate' type='text' placeholder='and ye shall find')
@@ -17,7 +17,7 @@
         p: b {{verse.book}} {{verse.verse}}.{{verse.chapter}}
 </template>
 
-<script lang="coffee">
+<script lang='coffee'>
 import axios from 'axios'
 
 export default {

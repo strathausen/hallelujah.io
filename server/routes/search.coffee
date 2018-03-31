@@ -1,6 +1,6 @@
 _ = require 'lodash'
 Router = require 'koa-router'
-db = require '../db'
+db = require '../db.coffee'
 
 router = new Router()
 

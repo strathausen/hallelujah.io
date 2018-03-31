@@ -4,7 +4,7 @@
   "description": "seek, and ye shall find",
   "private": true,
   "scripts": {
-    "dev": "nodemon server/index.coffee",
+    "dev": "backpack dev",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
     "build": "nuxt build && backpack build",
@@ -39,6 +39,7 @@
     "pug": "^2.0.0-rc.4",
     "sass-loader": "^6.0.6",
     "source-map-support": "^0.4.15",
+    "stylus-loader": "^3.0.2",
     "uuid": "^3.2.1"
   },
   "devDependencies": {

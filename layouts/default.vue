@@ -1,8 +1,7 @@
-<template>
-  <div>
-    <nuxt/>
-    <my-footer/>
-  </div>
+<template lang='pug'>
+  div
+    nuxt
+    my-footer
 </template>
 
 <script>

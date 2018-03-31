@@ -5,10 +5,16 @@ Router = require 'koa-router'
 searchRouter = require './routes/search.coffee'
 contentRouter = require './routes/content.coffee'
 
+# server side routes
 router = new Router()
+
+# search the bible
 router.use '/api/search', searchRouter.routes()
+
+# read content written in markdown
 router.use '/api/content', contentRouter.routes()
 
+# bootstrapping the server
 do () ->
   app = new Koa()
   host = process.env.HOST || '127.0.0.1'
