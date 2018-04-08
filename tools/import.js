@@ -5,6 +5,8 @@ const path = require('path')
 const Promise = require('bluebird')
 const dbConfig = require('../knexfile')
 const pg_languages = require('./pg_text_search_languages')
+// Still having encoding issues, search doesn't work on these :-(
+const unsupported = ['ar', 'ko', 'zh']
 
 const db = knex(dbConfig.development)
 
@@ -20,6 +22,9 @@ Promise.mapSeries(editions, async (edition) => {
   const books = require(path.join(sourcePath, edition))
   const abbrev = path.basename(edition).replace(path.extname(edition), '')
   const [locale] = abbrev.split('_')
+  if (unsupported.includes(locale)) {
+    return
+  }
   const pg_language = pg_languages[locale] || pg_languages.default
   const editionRow = { abbrev, locale, pg_language }
   const [edition_id] = await db('editions').insert(editionRow).returning('id')
