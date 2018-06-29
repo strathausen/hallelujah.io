@@ -23,6 +23,7 @@ Promise.mapSeries(editions, async (edition) => {
   const abbrev = path.basename(edition).replace(path.extname(edition), '')
   const [locale] = abbrev.split('_')
   if (unsupported.includes(locale)) {
+    console.log(`edition ${edition} is not yet supported, skipping.`) // eslint-disable-line
     return
   }
   const pg_language = pg_languages[locale] || pg_languages.default

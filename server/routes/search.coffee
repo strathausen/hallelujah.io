@@ -39,7 +39,7 @@ router.get '/query', (ctx) ->
   if edition
     verseQuery.where('edition', '=', edition)
 
-  console.log(verseQuery.toString())
+  # console.log(verseQuery.toString())
   verses = await verseQuery
   end = Date.now()
   duration = "#{end - start}ms"
