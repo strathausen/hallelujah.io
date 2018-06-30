@@ -1,6 +1,6 @@
 <template lang='pug'>
 section.content
-  nuxt-link(to='/')  &lt; back to search
+  nuxt-link(to='/')  &lt; returneth to thy search
   h1 {{ post.title }}
   div(v-html='post.body')
 </template>

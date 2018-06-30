@@ -26,9 +26,13 @@ export default {
     edition: ''
     query: ''
     results: []
+    lastQuery: ''
 
   methods:
     onUpdate: ->
+      return if @query.length <= 2 or @lastQuery == @query
+      console.log @lastQuery, @query
+      @lastQuery = @query
       params = q: @query, edition: @edition
       @results = (await axios.get('/api/search/query', { params })).data.verses
 

@@ -4,9 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const Promise = require('bluebird')
 const dbConfig = require('../knexfile')
-const pg_languages = require('./pg_text_search_languages')
-// Still having encoding issues, search doesn't work on these :-(
-const unsupported = ['ar', 'ko', 'zh']
+const { pg_languages, unsupported } = require('./language_configurations')
 
 const db = knex(dbConfig.development)
 
@@ -18,14 +16,13 @@ const editions = fs.readdirSync(sourcePath) // .slice(3, 4)
 
 console.log(`reading ${editions.length} editions...`) // eslint-disable-line
 Promise.mapSeries(editions, async (edition) => {
-  console.log(`starting work on edition ${edition}...`) // eslint-disable-line
   const books = require(path.join(sourcePath, edition))
   const abbrev = path.basename(edition).replace(path.extname(edition), '')
   const [locale] = abbrev.split('_')
   if (unsupported.includes(locale)) {
-    console.log(`edition ${edition} is not yet supported, skipping.`) // eslint-disable-line
     return
   }
+  console.log(`starting work on edition ${edition}...`) // eslint-disable-line
   const pg_language = pg_languages[locale] || pg_languages.default
   const editionRow = { abbrev, locale, pg_language }
   const [edition_id] = await db('editions').insert(editionRow).returning('id')
