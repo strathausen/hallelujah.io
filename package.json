@@ -37,7 +37,7 @@
     "koa-static": "^4.0.3",
     "lodash": "^4.17.10",
     "markdown-it": "^8.4.1",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.9.4",
     "nuxt": "latest",
     "pg": "^7.4.3",
     "pug": "^2.0.0-rc.4",
