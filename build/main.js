@@ -65,7 +65,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -115,13 +115,6 @@ module.exports = {
         loader: 'markdownit-loader'
       });
     }
-  },
-  watchOptions: { aggregateTimeout: 300, poll: 1000 },
-  watchers: {
-    webpack: {
-      aggregateTimeout: 300,
-      poll: 1000
-    }
   }
 };
 
@@ -135,11 +128,11 @@ _ = __webpack_require__(1);
 
 Router = __webpack_require__(0);
 
-fs = __webpack_require__(13);
+fs = __webpack_require__(12);
 
-fm = __webpack_require__(12);
+fm = __webpack_require__(11);
 
-md = __webpack_require__(15)();
+md = __webpack_require__(14)();
 
 router = new Router();
 
@@ -166,7 +159,7 @@ _ = __webpack_require__(1);
 
 Router = __webpack_require__(0);
 
-db = __webpack_require__(11);
+db = __webpack_require__(10);
 
 router = new Router();
 
@@ -239,22 +232,16 @@ module.exports = require("koa");
 /* 7 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-connect");
+module.exports = require("koa-logger");
 
 /***/ },
 /* 8 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-logger");
-
-/***/ },
-/* 9 */
-/***/ function(module, exports) {
-
 module.exports = require("nuxt");
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports) {
 
 module.exports = {
@@ -299,14 +286,14 @@ module.exports = {
 };
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 var db, dbConfig, knex;
 
-knex = __webpack_require__(14);
+knex = __webpack_require__(13);
 
-dbConfig = __webpack_require__(10);
+dbConfig = __webpack_require__(9);
 
 db = knex(dbConfig.development);
 
@@ -314,60 +301,54 @@ module.exports = db;
 
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports) {
 
 module.exports = require("front-matter");
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports) {
 
 module.exports = require("fs-extra");
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports) {
 
 module.exports = require("knex");
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports) {
 
 module.exports = require("markdown-it");
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-var Builder, Koa, Nuxt, Router, app, builder, config, contentRouter, cors, host, koaConnect, logger, nuxt, port, router, searchRouter;
+var Builder, Koa, Nuxt, Router, app, builder, config, contentRouter, cors, host, logger, nuxt, port, router, searchRouter;
 
 Koa = __webpack_require__(6);
 
 Router = __webpack_require__(0);
 
-logger = __webpack_require__(8);
+logger = __webpack_require__(7);
 
 cors = __webpack_require__(5);
 
-koaConnect = __webpack_require__(7);
-
-({Nuxt, Builder} = __webpack_require__(9));
+({Nuxt, Builder} = __webpack_require__(8));
 
 // Import and Set Nuxt.js options
 config = __webpack_require__(2);
 
+// Instantiate nuxt.js
+nuxt = new Nuxt(config);
+
 searchRouter = __webpack_require__(4);
 
 contentRouter = __webpack_require__(3);
-
-app = new Koa();
-
-// Instantiate nuxt.js
-config.dev = app.env !== 'production';
-
-nuxt = new Nuxt(config);
 
 // server side routes
 router = new Router();
@@ -379,6 +360,8 @@ router.use('/api/search', searchRouter.routes());
 router.use('/api/content', contentRouter.routes());
 
 // bootstrapping the server
+app = new Koa();
+
 app.use(logger());
 
 app.use(cors());
@@ -387,27 +370,33 @@ host = process.env.HOST || '127.0.0.1';
 
 port = process.env.PORT || 3000;
 
-app.use(router.routes());
+config.dev = app.env !== 'production';
 
 // Build in development
-// do () ->
 if (config.dev) {
   builder = new Builder(nuxt);
   builder.build();
 }
 
+app.use(router.routes());
+
 app.use(async function(ctx, next) {
   await next();
   // koa defaults to 404 when it sees that status is unset
   ctx.status = 200;
-  return (await koaConnect(nuxt.render)(ctx, next));
+  return new Promise(function(resolve, reject) {
+    ctx.res.on('close', resolve);
+    ctx.res.on('finish', resolve);
+    return nuxt.render(ctx.req, ctx.res, function(promise) {
+      // nuxt.render passes a rejected promise into callback on error.
+      return promise.then(resolve).catch(reject);
+    });
+  });
 });
 
 app.listen(port); //, host
 
 console.log(`Server listening on ${host}:${port} in ${app.env || 'development'}`);
-
-console.log(process.env.DATABASE_URL);
 
 
 /***/ }
