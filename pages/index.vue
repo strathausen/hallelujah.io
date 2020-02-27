@@ -14,7 +14,7 @@
       div(v-for='verse in results')
         hr
         p {{verse.text}}
-        p: b {{verse.book}} {{verse.verse}}.{{verse.chapter}}
+        p: b {{verse.book}} {{verse.chapter}}:{{verse.verse}}
     // Matomo
     script(type="text/javascript").
       var _paq = window._paq || [];
