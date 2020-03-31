@@ -16,6 +16,7 @@ const editions = fs.readdirSync(sourcePath) // .slice(3, 4)
 
 console.log(`reading ${editions.length} editions...`) // eslint-disable-line
 Promise.mapSeries(editions, async (edition) => {
+  try {
   const books = require(path.join(sourcePath, edition))
   const abbrev = path.basename(edition).replace(path.extname(edition), '')
   const [locale] = abbrev.split('_')
@@ -31,18 +32,21 @@ Promise.mapSeries(editions, async (edition) => {
 
     const [book_id] = await db('books').insert(bookRow).returning('id')
     await Promise.map(book.chapters, async (verses, chapterIndex) => {
-      const chapterRow = { book_id, index: chapterIndex }
+      const chapterRow = { book_id, index: chapterIndex + 1 }
       const [chapter_id] = await db('chapters').insert(chapterRow).returning('id')
-      const verseRows = verses.map((content, index) => {
+      const verseRows = verses.map((content, verseIndex) => {
         replacements.forEach(([search, replace]) => {
           content = content.replace(search, replace)
         })
-        return { index, content, chapter_id }
+        return { index: verseIndex + 1, content, chapter_id }
       })
       await db.batchInsert('verses', verseRows)
     }, { concurrency: 10 })
   })
   console.log(`finished edition ${edition}.`) // eslint-disable-line
+  } catch(e) {
+    console.log(`there was a problem with ${edition}`, e.stack);
+  }
 }).then(async () => {
   console.log('refreshing indexes...') // eslint-disable-line
   await db.raw('REFRESH MATERIALIZED VIEW search_index')
