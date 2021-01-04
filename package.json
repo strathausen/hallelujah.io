@@ -18,7 +18,7 @@
     "@koa/cors": "^2.2.1",
     "@nuxtjs/axios": "^5.0.1",
     "@nuxtjs/bulma": "^1.2.0",
-    "axios": "^0.17.1",
+    "axios": "^0.21.1",
     "backpack-core": "^0.3.0",
     "bluebird": "^3.5.1",
     "bookshelf": "^0.12.1",
