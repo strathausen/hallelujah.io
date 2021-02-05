@@ -23,7 +23,7 @@
     "@types/koa-router": "^7.4.1",
     "@types/lodash": "^4.14.165",
     "@types/markdown-it": "^10.0.3",
-    "axios": "^0.17.1",
+    "axios": "^0.21.1",
     "bluebird": "^3.5.1",
     "bookshelf": "^0.12.1",
     "cross-env": "^5.2.0",
