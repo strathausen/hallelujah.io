@@ -12,13 +12,6 @@
   },
   "author": "Johann Philipp Strathausen <philipp@stratha.us>",
   "dependencies": {
-    "@types/bluebird": "^3.5.33",
-    "@types/fs-extra": "^9.0.4",
-    "@types/koa": "^2.11.6",
-    "@types/koa-logger": "^3.1.1",
-    "@types/koa-router": "^7.4.1",
-    "@types/lodash": "^4.14.165",
-    "@types/markdown-it": "^10.0.3",
     "bluebird": "^3.5.1",
     "debug": "^3.1.0",
     "front-matter": "^2.3.0",
@@ -35,7 +28,14 @@
     "uuid": "^3.3.0"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.33",
+    "@types/fs-extra": "^9.0.4",
+    "@types/koa": "^2.11.6",
+    "@types/koa-logger": "^3.1.1",
+    "@types/koa-router": "^7.4.1",
     "@types/koa-static": "^4.0.1",
+    "@types/lodash": "^4.14.165",
+    "@types/markdown-it": "^10.0.3",
     "chalk": "^2.4.1",
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.6"

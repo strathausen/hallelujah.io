@@ -9,7 +9,7 @@ import {pg_languages, unsupported} from './language_configurations'
 
 const db = knex(development)
 
-const sourcePath = resolve(__dirname, '..', '..', 'bible', 'json')
+const sourcePath = resolve(__dirname, '..', '..', 'bibles', 'bible',  'json')
 
 const replacements: [RegExp, string][] = [[/&#x27;/g, "'"]]
 
