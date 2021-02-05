@@ -8,26 +8,20 @@ exports.up = async (knex, Promise) => {
   })
   await knex.schema.createTable('books', (table) => {
     table.increments('id').primary()
-    table.string('name')
-      .index()
-    table.string('abbrev')
-      .index()
-    table.integer('edition_id').references('editions.id').onDelete('cascade').notNull()
-      .index()
+    table.string('name').index()
+    table.string('abbrev').index()
+    table.integer('edition_id').references('editions.id').onDelete('cascade').notNull().index()
   })
   await knex.schema.createTable('chapters', (table) => {
     table.increments('id').primary()
-    table.string('index')
-      .index()
-    table.integer('book_id').references('books.id').onDelete('cascade').notNull()
-      .index()
+    table.integer('index').index()
+    table.integer('book_id').references('books.id').onDelete('cascade').notNull().index()
   })
   await knex.schema.createTable('verses', (table) => {
     table.increments('id').primary()
-    table.string('index')
+    table.integer('index')
     table.text('content')
-    table.integer('chapter_id').references('chapters.id').onDelete('cascade').notNull()
-      .index()
+    table.integer('chapter_id').references('chapters.id').onDelete('cascade').notNull().index()
   })
   await knex.raw('CREATE EXTENSION IF NOT EXISTS unaccent')
   await knex.raw(`
@@ -39,6 +33,7 @@ SELECT verses.id,
        books.name AS book,
        editions.abbrev AS edition,
        chapters.index AS chapter,
+       chapters.id AS chapter_id,
        editions.pg_language AS language,
        to_tsvector(editions.pg_language::regconfig, unaccent(verses.content)) AS document
 FROM verses

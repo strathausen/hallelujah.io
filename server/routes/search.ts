@@ -1,7 +1,16 @@
 import * as _ from 'lodash'
+import db from '../db'
+import Router from 'koa-router'
+
+type Edition = {
+  name: string
+  abbrev: string
+}
+
+const router = new Router()
 
 const loadEditions = (() => {
-  let editions = undefined
+  let editions: _.Dictionary<any[]> = undefined
   return async  () => {
     if (editions) {
       return editions
@@ -10,17 +19,18 @@ const loadEditions = (() => {
   }
 })()
 
-export const editions = async (req) => {
+router.get('/editions', async (ctx) => {
   const editions = await loadEditions()
-  return _(editions).map((e) => e[0]).each((e) =>
+  ctx.body = _.map(editions, (e: any[]) => e[0]).forEach((e: Edition) =>
     e.name = (e.abbrev.split('_')[1])
   )
-}
+})
 
-export const search = async (req) => {
-  const { q, limit, edition } = req.query
+router.get('/query', async (ctx) => {
+  const { q, limit, edition } = ctx.query
   if (!q) {
-    return { duration: 0, verses: [] }
+    ctx.body = { duration: 0, verses: [] }
+    return
   }
 
   const editions = await loadEditions()
@@ -32,7 +42,7 @@ export const search = async (req) => {
   const verseQuery = db('search_index')
     .select(
       'id', 'text', 'verse', 'book', 'chapter',
-      db.raw("ts_rank(document, #{queryPart}) AS relevancy", params)
+      db.raw(`ts_rank(document, ${queryPart}) AS relevancy`, params)
     )
     .where('document', '@@', db.raw(queryPart, params))
     .orderBy('relevancy', 'DESC')
@@ -45,5 +55,15 @@ export const search = async (req) => {
   const verses = await verseQuery
   const end = Date.now()
   const duration = `${end - start}ms`
-  return { duration, verses }
-}
+  ctx.body = { duration, verses }
+})
+
+// Entire chapter of the verse
+router.get('/chapter/:verseId', async (ctx) => {
+  const {verseId} = ctx.params
+  const chapterId = db('verses').select('chapter_id').where('id', verseId)
+  const verses = await db('verses').select('content', 'index').where('chapter_id', chapterId).orderBy('index')
+  ctx.body = {verses}
+})
+
+export default router

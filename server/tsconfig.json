@@ -13,11 +13,12 @@
         "paths": {
             "*": [
                 "node_modules/*",
-                "src/types/*"
+                "types/*"
             ]
         }
     },
     "include": [
-        "src/**/*"
+        "server/**/*",
+        "types.d.ts"
     ]
 }
