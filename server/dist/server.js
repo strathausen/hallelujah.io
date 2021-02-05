@@ -11,14 +11,14 @@ const search_1 = __importDefault(require("./routes/search"));
 const content_1 = __importDefault(require("./routes/content"));
 const app = new koa_1.default();
 const router = new koa_router_1.default();
-const root = 'public';
+const root = `${__dirname}/public`;
 router.use('/api/search', search_1.default.routes());
 router.use(content_1.default.routes());
-router.use(koa_static_1.default(root));
 const host = process.env.HOST || '127.0.0.1';
 const port = process.env.PORT || 3000;
 app.use(koa_logger_1.default());
 app.use(router.routes());
+app.use(koa_static_1.default(root));
 app.listen(port); //, host
 console.log(`Server listening on ${host}:${port} in ${app.env || 'development'}`);
 //# sourceMappingURL=server.js.map
