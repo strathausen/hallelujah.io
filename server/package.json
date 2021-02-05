@@ -8,14 +8,10 @@
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
     "precommit": "npm run lint",
-    "import-data": "ts-node ./tools/import.ts",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+    "import-data": "ts-node ./tools/import.ts"
   },
   "author": "Johann Philipp Strathausen <philipp@stratha.us>",
   "dependencies": {
-    "@koa/cors": "^2.2.1",
-    "@nuxtjs/axios": "^5.0.1",
-    "@nuxtjs/bulma": "^1.2.0",
     "@types/bluebird": "^3.5.33",
     "@types/fs-extra": "^9.0.4",
     "@types/koa": "^2.11.6",
@@ -23,36 +19,23 @@
     "@types/koa-router": "^7.4.1",
     "@types/lodash": "^4.14.165",
     "@types/markdown-it": "^10.0.3",
-    "axios": "^0.21.1",
     "bluebird": "^3.5.1",
-    "bookshelf": "^0.12.1",
-    "cross-env": "^5.2.0",
     "debug": "^3.1.0",
     "front-matter": "^2.3.0",
     "fs-extra": "^5.0.0",
     "knex": "^0.21.12",
     "koa": "^2.5.1",
-    "koa-connect": "^2.0.1",
     "koa-logger": "^3.2.0",
-    "koa-pug": "^4.0.4",
     "koa-router": "^7.4.0",
-    "koa-static": "^4.0.3",
     "lodash": "^4.17.19",
     "markdown-it": "^8.4.1",
-    "node-sass": "^4.13.1",
     "pg": "^7.4.3",
-    "pug": "^2.0.0-rc.4",
-    "sass-loader": "^6.0.6",
-    "source-map-support": "^0.4.15",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.2",
     "typescript": "^4.0.5",
     "uuid": "^3.3.0"
   },
   "devDependencies": {
     "chalk": "^2.4.1",
     "dotenv": "^8.2.0",
-    "nodemon": "^2.0.6",
-    "scmp": "^2.0.0"
+    "nodemon": "^2.0.6"
   }
 }
