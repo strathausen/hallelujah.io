@@ -1,10 +1,10 @@
-FROM node:10
+FROM node:12
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-COPY ./package.json /usr/src/app/
-RUN npm install && npm cache clean --force
-COPY ./ /usr/src/app
-RUN npm run build
+COPY ./server/package.json /usr/src/app/
+RUN npm install --production && npm cache clean --force
+COPY ./server/dist /usr/src/app
+COPY ./web/dist /usr/src/app/public
 ENV NODE_ENV production
 ENV PORT 80
 EXPOSE 80

@@ -1,0 +1,22 @@
+{
+  "name": "hallelujah.io",
+  "version": "1.0.0",
+  "description": "> seek, and ye shall find",
+  "main": "index.js",
+  "dependencies": {
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/strathausen/hallelujah.io.git"
+  },
+  "author": "Johann PHILIPP Strathausen <strathausen@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/strathausen/hallelujah.io/issues"
+  },
+  "homepage": "https://github.com/strathausen/hallelujah.io#readme"
+}

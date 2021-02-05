@@ -18,7 +18,7 @@
         }
     },
     "include": [
-        "server/**/*",
-        "types.d.ts"
+        "src/**/*",
+        "src/types.d.ts"
     ]
 }

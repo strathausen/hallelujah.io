@@ -4,10 +4,10 @@
   "description": "seek, and ye shall find",
   "private": true,
   "scripts": {
-    "start": "nodemon server.ts",
+    "start": "nodemon src/server.ts",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
-    "precommit": "npm run lint",
+    "build": "tsc",
     "import-data": "ts-node ./tools/import.ts"
   },
   "author": "Johann Philipp Strathausen <philipp@stratha.us>",
