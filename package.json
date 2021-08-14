@@ -4,8 +4,11 @@
   "description": "> seek, and ye shall find",
   "main": "index.js",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.10"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/node": "^15.12.4"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
