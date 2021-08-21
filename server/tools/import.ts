@@ -1,13 +1,13 @@
 import chalk from 'chalk'
 import knex from 'knex'
-import * as _ from 'lodash'
+import _ from 'lodash'
 import {readdirSync} from 'fs'
 import {resolve, join, basename, extname} from 'path'
 import {mapSeries, map} from 'bluebird'
 import {development} from '../knexfile'
 import {pg_languages, unsupported} from './language_configurations'
 
-const db = knex(development)
+const db = knex(development as any)
 
 const sourcePath = resolve(__dirname, '..', '..', 'bibles', 'bible',  'json')
 
@@ -32,7 +32,8 @@ mapSeries(editions, async (edition) => {
     }
     console.log(chalk.keyword('dodgerblue')(`starting work on edition ${edition}...`)) // eslint-disable-line
     const pg_language = pg_languages[locale] || pg_languages.default
-    const editionRow = {abbrev, locale, pg_language}
+    const name = abbrev.split('_')[1]
+    const editionRow = {abbrev, locale, pg_language, name}
     const [edition_id] = await db('editions').insert(editionRow).returning('id')
     await map(books, async (book) => {
       const bookRow = {abbrev: book.abbrev, name: book.name, edition_id}
